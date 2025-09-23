@@ -26,4 +26,4 @@ The goal is to create a clean, modern, and fully responsive platform that highli
 - Expanding **Portfolio** with real projects.  
 - Enhancing **animations and transitions**.  
 
-   git clone https://github.com/YOUR-USERNAME/photmedia-redesign.git
+   git clone https://github.com/dannyBoison/photmedia
