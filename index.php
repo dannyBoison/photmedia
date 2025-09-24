@@ -1,5 +1,5 @@
 <?php
-// index.php - PMT Ghana Homepage (fully responsive with mobile nav + responsive cards)
+// index.php - PMT Ghana Homepage (fully responsive with mobile nav + responsive cards + smooth about carousel)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -145,7 +145,10 @@ img { max-width: 100%; display: block; }
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
-.about-carousel { display: flex; transition: transform 0.6s ease-in-out; }
+.about-carousel {
+  display: flex;
+  transition: transform 0.8s ease-in-out;
+}
 .about-slide { min-width: 100%; position: relative; }
 .about-slide img { width: 100%; display: block; }
 .about-slide .caption {
@@ -271,7 +274,6 @@ img { max-width: 100%; display: block; }
   .hero h1 { font-size: 1.6rem; }
   .portfolio-img-wrapper { height: 160px; }
 }
-
   </style>
 </head>
 
@@ -293,7 +295,7 @@ img { max-width: 100%; display: block; }
       <a href="#contact" class="btn primary">Get in Touch</a>
     </div>
   </header>
-<canvas id="matrixCanvas"></canvas>
+
   <!-- Hero -->
   <section class="hero container">
     <div class="hero-text">
@@ -319,7 +321,6 @@ img { max-width: 100%; display: block; }
     </div>
   </section>
 
-
   <!-- About Section -->
 <section id="about" class="about container grid-2">
   <!-- About Carousel -->
@@ -338,7 +339,6 @@ img { max-width: 100%; display: block; }
         <div class="caption">Empowering businesses with tech</div>
       </div>
     </div>
-
     <!-- Arrows -->
     <button class="about-arrow left" onclick="moveAboutSlide(-1)">&#10094;</button>
     <button class="about-arrow right" onclick="moveAboutSlide(1)">&#10095;</button>
@@ -351,8 +351,6 @@ img { max-width: 100%; display: block; }
     <a href="about.php" class="btn primary">Learn More</a>
   </div>
 </section>
-
-
 
   <!-- Services -->
   <section id="services" class="services">
@@ -406,8 +404,9 @@ img { max-width: 100%; display: block; }
     <div class="footer-bottom"><p>© 2025 PMT Ghana. All rights reserved.</p></div>
   </footer>
 
-  <!-- JS for slideshow -->
+  <!-- JS -->
   <script>
+    /* HERO SLIDESHOW */
     let slideIndex = 0;
     showSlides();
     function showSlides() {
@@ -426,134 +425,98 @@ img { max-width: 100%; display: block; }
       showSlides();
     }
 
+    /* SCRAMBLED TEXT */
+    const messages = [
+      "Innovative Software Solutions for Africa and Beyond",
+      "What if the future is just a simulation?",
+      "We build the codes that shape your reality.",
+      "Connect with us — let’s rewrite the tech world together."
+    ];
+    const scrambleText = document.getElementById("scrambleText");
+    let msgIndex = 0;
+    const chars = "!<>-_\\/[]{}—=+*^?#________";
+    let frame = 0, queue = [], frameRequest;
 
-     // Matrix effect
-const canvas = document.getElementById("matrixCanvas");
-const ctx = canvas.getContext("2d");
-
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-
-const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%^&*+-";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = [];
-
-// one drop per column
-for (let x = 0; x < columns; x++) drops[x] = 1;
-
-// color toggle
-let matrixColor = "#0F0"; // start green
-
-function drawMatrix() {
- ctx.fillStyle = "rgba(252, 252, 252, 0.73)";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = matrixColor;
-  ctx.font = fontSize + "px monospace";
-
-  for (let i = 0; i < drops.length; i++) {
-    const text = letters.charAt(Math.floor(Math.random() * letters.length));
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
+    function setText(newText) {
+      const oldText = scrambleText.innerText;
+      const length = Math.max(oldText.length, newText.length);
+      const promise = new Promise((resolve) => {
+        queue = [];
+        for (let i = 0; i < length; i++) {
+          const from = oldText[i] || "";
+          const to = newText[i] || "";
+          const start = Math.floor(Math.random() * 40);
+          const end = start + Math.floor(Math.random() * 40);
+          queue.push({ from, to, start, end, char: null });
+        }
+        cancelAnimationFrame(frameRequest);
+        frame = 0;
+        update(resolve);
+      });
+      return promise;
     }
-    drops[i]++;
-  }
-}
-
-setInterval(drawMatrix, 50);
-
-// Messages to cycle
-const messages = [
-  "Innovative Software Solutions for Africa and Beyond",
-  "What if the future is just a simulation?",
-  "We build the codes that shape your reality.",
-  "Connect with us — let’s rewrite the tech world together."
-];
-
-const scrambleText = document.getElementById("scrambleText");
-let msgIndex = 0;
-const chars = "!<>-_\\/[]{}—=+*^?#________";
-let frame = 0;
-let queue = [];
-let frameRequest;
-
-// Scramble animation function
-function setText(newText) {
-  const oldText = scrambleText.innerText;
-  const length = Math.max(oldText.length, newText.length);
-  const promise = new Promise((resolve) => {
-    queue = [];
-    for (let i = 0; i < length; i++) {
-      const from = oldText[i] || "";
-      const to = newText[i] || "";
-      const start = Math.floor(Math.random() * 40);
-      const end = start + Math.floor(Math.random() * 40);
-      queue.push({ from, to, start, end, char: null });
-    }
-    cancelAnimationFrame(frameRequest);
-    frame = 0;
-    update(resolve);
-  });
-  return promise;
-}
-
-function update(resolve) {
-  let output = "";
-  let complete = 0;
-  for (let i = 0; i < queue.length; i++) {
-    let { from, to, start, end, char } = queue[i];
-    if (frame >= end) {
-      complete++;
-      output += to;
-    } else if (frame >= start) {
-      if (!char || Math.random() < 0.28) {
-        char = chars[Math.floor(Math.random() * chars.length)];
-        queue[i].char = char;
+    function update(resolve) {
+      let output = "", complete = 0;
+      for (let i = 0; i < queue.length; i++) {
+        let { from, to, start, end, char } = queue[i];
+        if (frame >= end) {
+          complete++;
+          output += to;
+        } else if (frame >= start) {
+          if (!char || Math.random() < 0.28) {
+            char = chars[Math.floor(Math.random() * chars.length)];
+            queue[i].char = char;
+          }
+          output += `<span class="dud">${char}</span>`;
+        } else {
+          output += from;
+        }
       }
-      output += `<span class="dud">${char}</span>`;
-    } else {
-      output += from;
+      scrambleText.innerHTML = output;
+      if (complete === queue.length) {
+        resolve();
+      } else {
+        frame++;
+        frameRequest = requestAnimationFrame(() => update(resolve));
+      }
     }
-  }
-  scrambleText.innerHTML = output;
-  if (complete === queue.length) {
-    resolve();
-  } else {
-    frame++;
-    frameRequest = requestAnimationFrame(() => update(resolve));
-  }
-}
-
-// Cycle messages every 5s
-function nextMessage() {
-  setText(messages[msgIndex]).then(() => {
-    setTimeout(nextMessage, 5000);
-  });
-  msgIndex = (msgIndex + 1) % messages.length;
-}
-
-// start
-nextMessage();
-
-// Reveal About Text on Scroll
-  const aboutText = document.querySelector('.about-text');
-
-  function revealAboutText() {
-    if (!aboutText) return;
-    const rect = aboutText.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 100) {
-      aboutText.classList.add('show');
-      window.removeEventListener('scroll', revealAboutText);
+    function nextMessage() {
+      setText(messages[msgIndex]).then(() => {
+        setTimeout(nextMessage, 5000);
+      });
+      msgIndex = (msgIndex + 1) % messages.length;
     }
-  }
+    nextMessage();
 
-  window.addEventListener('scroll', revealAboutText);
-  // Run once in case it's already in view
-  revealAboutText();
+    /* REVEAL ABOUT TEXT ON SCROLL */
+    const aboutText = document.querySelector('.about-text');
+    function revealAboutText() {
+      if (!aboutText) return;
+      const rect = aboutText.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        aboutText.classList.add('show');
+        window.removeEventListener('scroll', revealAboutText);
+      }
+    }
+    window.addEventListener('scroll', revealAboutText);
+    revealAboutText();
 
+    /* ABOUT CAROUSEL (distinct from hero) */
+    let aboutIndex = 0;
+    const aboutCarousel = document.getElementById("aboutCarousel");
+    const aboutSlides = document.querySelectorAll(".about-slide");
+
+    function moveAboutSlide(n) {
+      aboutIndex += n;
+      if (aboutIndex < 0) aboutIndex = aboutSlides.length - 1;
+      if (aboutIndex >= aboutSlides.length) aboutIndex = 0;
+      updateAboutCarousel();
+    }
+    function updateAboutCarousel() {
+      const offset = -aboutIndex * 100;
+      aboutCarousel.style.transform = `translateX(${offset}%)`;
+    }
+    setInterval(() => moveAboutSlide(1), 6000);
   </script>
 </body>
 </html>
