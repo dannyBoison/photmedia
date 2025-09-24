@@ -1,5 +1,5 @@
 <?php
-// index.php - PMT Ghana Homepage (fully responsive with mobile nav + responsive cards + smooth about carousel)
+// index.php - PMT Ghana Homepage (fully responsive with mobile nav + responsive cards)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,43 +49,45 @@ img { max-width: 100%; display: block; }
   color: #07f;
 }
 
-/* ========== HEADER ========== */
-.header {
-  background: #fff;
-  padding: 15px 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-.header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo { font-weight: 700; font-size: 1.4rem; color: #07f; }
-.nav { display: flex; gap: 20px; }
-.nav a { color: #333; font-weight: 500; transition: color .3s; }
-.nav a:hover { color: #07f; }
-.burger { display: none; font-size: 1.8rem; cursor: pointer; }
 
-@media (max-width: 768px) {
-  .nav {
-    display: none;
-    flex-direction: column;
-    background: #fff;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    width: 200px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    padding: 15px;
-    border-radius: 8px;
-  }
-  .nav.active { display: flex; }
-  .burger { display: block; }
-  .header .btn.primary { display: none; }
-}
+.logo { font-weight: 700; font-size: 1.4rem; color: #07f; }
+
+
+
+
+
+ /* ========== HEADER ========== */
+    .header {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:1rem 2rem; background:#111; color:#fff; position:sticky; top:0; z-index:1000;
+    }
+    .logo { font-size:1.4rem; font-weight:bold; }
+    nav ul { list-style:none; display:flex; gap:1rem; }
+    nav ul li a { color:#ddd; transition:0.3s; }
+    nav ul li a:hover, nav ul li a.active { color:#0ff; }
+
+    /* Hamburger */
+    .hamburger { display:none; font-size:1.8rem; cursor:pointer; background:none; border:none; color:#fff; }
+  /* ========== MEDIA QUERIES ========== */
+    @media (max-width:768px) {
+      nav { display:none; width:100%; }
+      nav.active { display:block; }
+      nav ul { flex-direction:column; background:#111; width:100%; margin-top:10px; }
+      nav ul li a { display:block; padding:10px; border-top:1px solid #222; }
+      .hamburger { display:block; }
+      .hero h1 { font-size:2rem; }
+      .hero p { font-size:1rem; }
+      .content-section, .why-grid { grid-template-columns:1fr; text-align:center; }
+      .image-block { order:-1; }
+    }
+    @media (max-width:500px) {
+      .hero h1 { font-size:1.6rem; }
+      .hero p { font-size:0.95rem; }
+      .btn, .btn-service { display:block; width:100%; }
+    }
+
+
+
 
 /* ========== HERO ========== */
 .hero {
@@ -145,10 +147,7 @@ img { max-width: 100%; display: block; }
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
-.about-carousel {
-  display: flex;
-  transition: transform 0.8s ease-in-out;
-}
+.about-carousel { display: flex; transition: transform 0.6s ease-in-out; }
 .about-slide { min-width: 100%; position: relative; }
 .about-slide img { width: 100%; display: block; }
 .about-slide .caption {
@@ -274,26 +273,24 @@ img { max-width: 100%; display: block; }
   .hero h1 { font-size: 1.6rem; }
   .portfolio-img-wrapper { height: 160px; }
 }
+
   </style>
 </head>
 
 <body>
-  
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="logo">PMT Ghana</div>
-      <nav class="nav">
-        <a href="index.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#blog">Blog</a>
-        <a href="contact.php">Contact</a>
-      </nav>
-      <div class="burger" onclick="document.querySelector('.nav').classList.toggle('active')">☰</div>
-      <a href="#contact" class="btn primary">Get in Touch</a>
-    </div>
+<header class="header">
+    <div class="logo">PMT Ghana</div>
+    <button class="hamburger" id="hamburger">☰</button>
+    <nav id="navMenu">
+      <ul>
+        <li><a href="index.php" class="active" >Home</a></li>
+        <li><a href="about.php" >About</a></li>
+        <li><a href="services.php">Services</a></li>
+        <li><a href="portfolio.php">Portfolio</a></li>
+        <li><a href="blog.php">Blog</a></li>
+        <li><a href="contact.php">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
   <!-- Hero -->
@@ -321,6 +318,7 @@ img { max-width: 100%; display: block; }
     </div>
   </section>
 
+
   <!-- About Section -->
 <section id="about" class="about container grid-2">
   <!-- About Carousel -->
@@ -339,6 +337,7 @@ img { max-width: 100%; display: block; }
         <div class="caption">Empowering businesses with tech</div>
       </div>
     </div>
+
     <!-- Arrows -->
     <button class="about-arrow left" onclick="moveAboutSlide(-1)">&#10094;</button>
     <button class="about-arrow right" onclick="moveAboutSlide(1)">&#10095;</button>
@@ -351,6 +350,8 @@ img { max-width: 100%; display: block; }
     <a href="about.php" class="btn primary">Learn More</a>
   </div>
 </section>
+
+
 
   <!-- Services -->
   <section id="services" class="services">
@@ -404,9 +405,15 @@ img { max-width: 100%; display: block; }
     <div class="footer-bottom"><p>© 2025 PMT Ghana. All rights reserved.</p></div>
   </footer>
 
-  <!-- JS -->
+  <!-- JS for slideshow -->
   <script>
-    /* HERO SLIDESHOW */
+
+     // Hamburger menu toggle
+    const hamburger=document.getElementById("hamburger");
+    const navMenu=document.getElementById("navMenu");
+    hamburger.addEventListener("click",()=>{ navMenu.classList.toggle("active"); });
+
+    
     let slideIndex = 0;
     showSlides();
     function showSlides() {
@@ -425,98 +432,100 @@ img { max-width: 100%; display: block; }
       showSlides();
     }
 
-    /* SCRAMBLED TEXT */
-    const messages = [
-      "Innovative Software Solutions for Africa and Beyond",
-      "What if the future is just a simulation?",
-      "We build the codes that shape your reality.",
-      "Connect with us — let’s rewrite the tech world together."
-    ];
-    const scrambleText = document.getElementById("scrambleText");
-    let msgIndex = 0;
-    const chars = "!<>-_\\/[]{}—=+*^?#________";
-    let frame = 0, queue = [], frameRequest;
 
-    function setText(newText) {
-      const oldText = scrambleText.innerText;
-      const length = Math.max(oldText.length, newText.length);
-      const promise = new Promise((resolve) => {
-        queue = [];
-        for (let i = 0; i < length; i++) {
-          const from = oldText[i] || "";
-          const to = newText[i] || "";
-          const start = Math.floor(Math.random() * 40);
-          const end = start + Math.floor(Math.random() * 40);
-          queue.push({ from, to, start, end, char: null });
-        }
-        cancelAnimationFrame(frameRequest);
-        frame = 0;
-        update(resolve);
-      });
-      return promise;
+
+// Messages to cycle
+const messages = [
+  "Innovative Software Solutions for Africa and Beyond",
+  "What if the future is just a simulation?",
+  "We build the codes that shape your reality.",
+  "Connect with us — let’s rewrite the tech world together."
+];
+
+const scrambleText = document.getElementById("scrambleText");
+let msgIndex = 0;
+const chars = "!<>-_\\/[]{}—=+*^?#________";
+let frame = 0;
+let queue = [];
+let frameRequest;
+
+// Scramble animation function
+function setText(newText) {
+  const oldText = scrambleText.innerText;
+  const length = Math.max(oldText.length, newText.length);
+  const promise = new Promise((resolve) => {
+    queue = [];
+    for (let i = 0; i < length; i++) {
+      const from = oldText[i] || "";
+      const to = newText[i] || "";
+      const start = Math.floor(Math.random() * 40);
+      const end = start + Math.floor(Math.random() * 40);
+      queue.push({ from, to, start, end, char: null });
     }
-    function update(resolve) {
-      let output = "", complete = 0;
-      for (let i = 0; i < queue.length; i++) {
-        let { from, to, start, end, char } = queue[i];
-        if (frame >= end) {
-          complete++;
-          output += to;
-        } else if (frame >= start) {
-          if (!char || Math.random() < 0.28) {
-            char = chars[Math.floor(Math.random() * chars.length)];
-            queue[i].char = char;
-          }
-          output += `<span class="dud">${char}</span>`;
-        } else {
-          output += from;
-        }
+    cancelAnimationFrame(frameRequest);
+    frame = 0;
+    update(resolve);
+  });
+  return promise;
+}
+
+function update(resolve) {
+  let output = "";
+  let complete = 0;
+  for (let i = 0; i < queue.length; i++) {
+    let { from, to, start, end, char } = queue[i];
+    if (frame >= end) {
+      complete++;
+      output += to;
+    } else if (frame >= start) {
+      if (!char || Math.random() < 0.28) {
+        char = chars[Math.floor(Math.random() * chars.length)];
+        queue[i].char = char;
       }
-      scrambleText.innerHTML = output;
-      if (complete === queue.length) {
-        resolve();
-      } else {
-        frame++;
-        frameRequest = requestAnimationFrame(() => update(resolve));
-      }
+      output += `<span class="dud">${char}</span>`;
+    } else {
+      output += from;
     }
-    function nextMessage() {
-      setText(messages[msgIndex]).then(() => {
-        setTimeout(nextMessage, 5000);
-      });
-      msgIndex = (msgIndex + 1) % messages.length;
-    }
-    nextMessage();
+  }
+  scrambleText.innerHTML = output;
+  if (complete === queue.length) {
+    resolve();
+  } else {
+    frame++;
+    frameRequest = requestAnimationFrame(() => update(resolve));
+  }
+}
 
-    /* REVEAL ABOUT TEXT ON SCROLL */
-    const aboutText = document.querySelector('.about-text');
-    function revealAboutText() {
-      if (!aboutText) return;
-      const rect = aboutText.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
-        aboutText.classList.add('show');
-        window.removeEventListener('scroll', revealAboutText);
-      }
-    }
-    window.addEventListener('scroll', revealAboutText);
-    revealAboutText();
+// Cycle messages every 5s
+function nextMessage() {
+  setText(messages[msgIndex]).then(() => {
+    setTimeout(nextMessage, 5000);
+  });
+  msgIndex = (msgIndex + 1) % messages.length;
+}
 
-    /* ABOUT CAROUSEL (distinct from hero) */
-    let aboutIndex = 0;
-    const aboutCarousel = document.getElementById("aboutCarousel");
-    const aboutSlides = document.querySelectorAll(".about-slide");
+// start
+nextMessage();
 
-    function moveAboutSlide(n) {
-      aboutIndex += n;
-      if (aboutIndex < 0) aboutIndex = aboutSlides.length - 1;
-      if (aboutIndex >= aboutSlides.length) aboutIndex = 0;
-      updateAboutCarousel();
+// Reveal About Text on Scroll
+  const aboutText = document.querySelector('.about-text');
+
+  function revealAboutText() {
+    if (!aboutText) return;
+    const rect = aboutText.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      aboutText.classList.add('show');
+      window.removeEventListener('scroll', revealAboutText);
     }
-    function updateAboutCarousel() {
-      const offset = -aboutIndex * 100;
-      aboutCarousel.style.transform = `translateX(${offset}%)`;
-    }
-    setInterval(() => moveAboutSlide(1), 6000);
+  }
+
+  window.addEventListener('scroll', revealAboutText);
+  // Run once in case it's already in view
+  revealAboutText();
+
+
+  
+
   </script>
 </body>
 </html>
